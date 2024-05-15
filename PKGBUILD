@@ -5,7 +5,7 @@
 
 pkgname=nzbget-git
 pkgver=24.1.r2456.1bdc7e31
-pkgrel=1
+pkgrel=2
 pkgdesc="Download from Usenet using .nzb files"
 arch=('x86_64')
 url="https://github.com/nzbgetcom/nzbget"
@@ -13,8 +13,8 @@ license=('GPL')
 depends=('libxml2' 'openssl')
 makedepends=('autoconf' 'boost' 'git')
 optdepends=('python: run scripts'
-            'unrar: unpacking archives' 
-            'p7zip: unpacking archives' 
+            'unrar: unpacking archives'
+            'p7zip: unpacking archives'
             'par2cmdline: verificate and repair PAR 2.0 files')
 provides=('nzbget' 'nzbget-systemd')
 conflicts=('nzbget' 'nzbget-systemd')
