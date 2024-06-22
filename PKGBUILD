@@ -4,14 +4,14 @@
 # Contributor: Jan Holthuis <holthuis.jan@googlemail.com>
 
 pkgname=nzbget-git
-pkgver=24.1.r2463.a98e6d11
+pkgver=24.2
+_pkgdate=20240621
 pkgrel=1
-pkgdesc="Download from Usenet using .nzb files"
+pkgdesc="Download from Usenet using .nzb files (testing release)"
 arch=('x86_64')
 url="https://github.com/nzbgetcom/nzbget"
 license=('GPL')
 depends=('libxml2' 'openssl')
-makedepends=('autoconf' 'boost' 'git')
 optdepends=('python: run scripts'
             'unrar: unpacking archives'
             'p7zip: unpacking archives'
@@ -19,35 +19,22 @@ optdepends=('python: run scripts'
 provides=('nzbget' 'nzbget-systemd')
 conflicts=('nzbget' 'nzbget-systemd')
 install=nzbget.install
-source=("$pkgname::git+https://github.com/nzbgetcom/nzbget.git#branch=develop"
+source=("nzbget-${pkgver}-testing-${_pkgdate}-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-${pkgver}-testing-${_pkgdate}-amd64.deb"
         "nzbget.service")
 sha256sums=('SKIP'
             'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
 
-pkgver() {
-  cd "$pkgname"
-  printf "%s.r%s.%s" "$(git describe --tags | sed 's/^v//;s/-.*//g')" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
+prepare() {
+  mv "nzbget-${pkgver}-testing-${_pkgdate}-amd64.deb" "$pkgname-$pkgver.deb"
 
-build() {
-  cd "$srcdir/$pkgname"
-
-  autoreconf --install
-  ./configure --prefix=/usr --sbindir='/usr/bin' --enable-parcheck --with-tlslib=OpenSSL
-  make
+  ar x "$pkgname-$pkgver.deb"
+  tar xf data.tar.xz
 }
 
 package() {
-  cd "$srcdir/$pkgname"
+  cp -r usr "$pkgdir"
 
-  make DESTDIR="$pkgdir/" install
+  install -Dm644 nzbget.service "$pkgdir/usr/lib/systemd/system/nzbget.service"
 
-  install -d "${pkgdir}/usr/share/nzbget"
-  install -m 644 -t "${pkgdir}/usr/share/nzbget" README.md
-
-  cd "$srcdir"
-
-  install -d "${pkgdir}/usr/lib/systemd/system"
-  install -m 644 -t "${pkgdir}/usr/lib/systemd/system" nzbget.service
   install -dm 750 "${pkgdir}/var/lib/nzbget"
 }
