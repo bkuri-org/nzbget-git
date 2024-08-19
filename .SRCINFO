@@ -1,7 +1,7 @@
 pkgbase = nzbget-git
 	pkgdesc = Download from Usenet using .nzb files (testing release)
-	pkgver = 24.2
-	pkgrel = 20240801
+	pkgver = 24.3
+	pkgrel = 20240816
 	url = https://github.com/nzbgetcom/nzbget
 	install = nzbget.install
 	arch = x86_64
@@ -16,9 +16,9 @@ pkgbase = nzbget-git
 	provides = nzbget-systemd
 	conflicts = nzbget
 	conflicts = nzbget-systemd
-	source = nzbget-24.2-testing-20240801-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-24.2-testing-20240801-amd64.deb
+	source = nzbget-24.3-testing-20240816-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-24.3-testing-20240816-amd64.deb
 	source = nzbget.service
-	sha256sums = ee0ca1d69e0b6904e1ab62295b0ab22274aa4b726656de0b4ec5f13792c37c70
+	sha256sums = ed3175f46eb1d6dc08f836b1a713662d9ee7e34bf5328ed96a947ed7acc56260
 	sha256sums = e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99
 
 pkgname = nzbget-git
