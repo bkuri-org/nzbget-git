@@ -5,7 +5,7 @@
 
 pkgname=nzbget-git
 pkgver=24.4
-pkgrel=20240912
+pkgrel=20240913
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 arch=('x86_64')
 url="https://github.com/nzbgetcom/nzbget"
@@ -20,7 +20,7 @@ conflicts=('nzbget' 'nzbget-systemd')
 install=nzbget.install
 source=("nzbget-${pkgver}-testing-${pkgrel}-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-${pkgver}-testing-${pkgrel}-amd64.deb"
         "nzbget.service")
-sha256sums=('e427c873263d8e5e7126a7e7f37ad3d59b105680dd6f36b8b11aa1a274763269'
+sha256sums=('468d64a5b19b00a69be9ea3d214e7cc43b782bdb8aa3e51f5fca0712adbd041c'
             'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
 
 prepare() {
