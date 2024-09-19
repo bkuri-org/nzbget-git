@@ -20,7 +20,7 @@ conflicts=('nzbget' 'nzbget-systemd')
 install=nzbget.install
 source=("nzbget-${pkgver}-testing-${pkgrel}-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-${pkgver}-testing-${pkgrel}-amd64.deb"
         "nzbget.service")
-sha256sums=('468d64a5b19b00a69be9ea3d214e7cc43b782bdb8aa3e51f5fca0712adbd041c'
+sha256sums=('24554c7e0d125bc724da06a87d41f6d65520bfa45a03040c95606873d3dcf296'
             'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
 
 prepare() {

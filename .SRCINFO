@@ -18,7 +18,7 @@ pkgbase = nzbget-git
 	conflicts = nzbget-systemd
 	source = nzbget-24.4-testing-20240917-amd64.deb::https://github.com/nzbgetcom/nzbget/releases/download/testing/nzbget-24.4-testing-20240917-amd64.deb
 	source = nzbget.service
-	sha256sums = 468d64a5b19b00a69be9ea3d214e7cc43b782bdb8aa3e51f5fca0712adbd041c
+	sha256sums = 24554c7e0d125bc724da06a87d41f6d65520bfa45a03040c95606873d3dcf296
 	sha256sums = e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99
 
 pkgname = nzbget-git
