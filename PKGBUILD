@@ -4,10 +4,9 @@
 # Contributor: Jan Holthuis <holthuis.jan@googlemail.com>
 
 pkgname=nzbget-git
-_pkgver=24.4
-pkgver="${_pkgver}.r2510.e5a28375"
-pkgrel=1
+pkgrel=2
 pkgdesc="Download from Usenet using .nzb files (testing release)"
+pkgver=24.4.r2510.e5a28375
 arch=('x86_64')
 url="https://github.com/nzbgetcom/nzbget"
 license=('GPL')
@@ -26,7 +25,10 @@ sha256sums=('SKIP'
 
 pkgver() {
   cd "${srcdir}/${pkgname}"
-  printf "%s.r%s.%s" "${_pkgver}" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  local _pkgver=$(grep 'set(VERSION' CMakeLists.txt | sed -n 's/.*"\([0-9.]*\)".*/\1/p')
+  local _rev=$(git rev-list --count HEAD)
+  local _hash=$(git rev-parse --short HEAD)
+  printf "%s.r%s.%s" "${_pkgver}" "${_rev}" "${_hash}"
 }
 
 prepare() {
