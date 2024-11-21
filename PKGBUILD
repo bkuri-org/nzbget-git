@@ -3,20 +3,22 @@
 # Contributor: Nicola Hinssen <nicola.hinssen@gmail.com>
 # Contributor: Jan Holthuis <holthuis.jan@googlemail.com>
 
-pkgname=nzbget-git
+pkgbase=nzbget-git
+pkgname=(nzbget-git nzbget-git-debug)
 pkgver=24.5.r2530.184834d3
-pkgrel=1
+pkgrel=2
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 
 arch=('x86_64')
 install=nzbget.install
 license=('GPL')
-options=('!strip' 'debug')
+options=('debug' '!lto')
 url="https://github.com/nzbgetcom/nzbget"
 
 depends=('libxml2' 'openssl')
 makedepends=('cmake' 'boost' 'git')
-optdepends=('python: run scripts'
+optdepends=('nzbget-git-debug: Debug symbols for nzbget'
+			'python: run scripts'
             'unrar: unpacking archives'
             'p7zip: unpacking archives')
 
@@ -29,22 +31,39 @@ source=("$pkgname::git+https://github.com/nzbgetcom/nzbget.git#branch=develop"
 sha256sums=('SKIP'
             'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
 
-build() {
-  cd "${srcdir}/${pkgname}/build"
+prepare() {
+  cd "${srcdir}/${pkgbase}"
+  
+  # Ensure build directory exists
+  mkdir -p build
+  
+  # Set environment variables to control build locations
+  export HOME="${srcdir}"
+  export XDG_CACHE_HOME="${srcdir}/.cache"
+  export XDG_DATA_HOME="${srcdir}/data"
+  export XDG_CONFIG_HOME="${srcdir}/config"
+}
 
-  # Configure the build
+build() {
+  cd "${srcdir}/${pkgbase}/build"
+
+  # Configure the build to generate debug symbols
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -Wno-dev \
-    -DCMAKE_POLICY_DEFAULT_CMP0167=NEW
+    -DCMAKE_POLICY_DEFAULT_CMP0167=NEW \
+    -DDEBUG_SYMBOLS=ON
 
   # Build the project
   cmake --build . -j $(nproc)
 }
 
-package() {
-  # Install built files
+check() {
+  cd "${srcdir}/${pkgbase}/build"
+  ctest --output-on-failure
+}
+
+package_nzbget-git() {
   cd "${srcdir}/${pkgname}/build"
   DESTDIR="$pkgdir" cmake --install .
   
@@ -60,15 +79,37 @@ package() {
   install -Dm 644 README.md "${pkgdir}/usr/share/nzbget/README.md"
   install -Dm 644 nzbget.conf "${pkgdir}/usr/share/nzbget/nzbget.conf"
 
-  # Strip binary (makepkg handles debug symbols on its own)
+  # Remove unnecessary build artifacts
+  rm -rf "${pkgdir}/usr/src"
+  rm -rf "${pkgdir}/home"
+  
+  # Strip binary (added back)
   cd "$pkgdir/usr/bin"
   if [[ -f nzbget && "$(file -bi nzbget)" == *"application/x-executable"* ]]; then
-    strip --strip-unneeded nzbget
+    strip --strip-all nzbget
+  fi
+}
+
+package_nzbget-git-debug() {
+  pkgdesc="Debug symbols for nzbget-git"
+  depends=("nzbget-git=$pkgver")
+  options=('!strip')
+
+  # Create debug directory
+  install -dm755 "${pkgdir}/usr/lib/debug"
+
+  # Copy debug symbols
+  cd "${srcdir}/${pkgbase}/build"
+  find . -name "*.debug" -exec install -Dm644 {} "${pkgdir}/usr/lib/debug/{}" \;
+
+  # Optionally, copy full debug symbols for the binary
+  if [[ -f "${srcdir}/${pkgbase}/build/nzbget" ]]; then
+    objcopy --only-keep-debug "${srcdir}/${pkgbase}/build/nzbget" "${pkgdir}/usr/lib/debug/usr/bin/nzbget.debug"
   fi
 }
 
 pkgver() {
-  cd "${srcdir}/${pkgname}"
+  cd "${srcdir}/${pkgbase}"
   
   # Extract version from CMakeLists.txt
   local _pkgver=$(grep -oP 'set\(VERSION "\K[^"]+' CMakeLists.txt)
@@ -79,11 +120,4 @@ pkgver() {
   
   # Construct and print version string
   printf "%s.r%s.%s" "${_pkgver}" "${_rev}" "${_hash}"
-}
-
-prepare() {
-  cd "${srcdir}/${pkgname}"
-  
-  # Ensure build directory exists
-  mkdir -p build
 }
