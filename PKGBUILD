@@ -5,7 +5,7 @@
 
 pkgbase=nzbget-git
 pkgname=(nzbget-git nzbget-git-debug)
-pkgver=24.5.r2531.00e50a5a
+pkgver=24.5.r2532.80bbc2d6
 pkgrel=1
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 
