@@ -5,7 +5,7 @@
 
 pkgbase=nzbget-git
 pkgname=(nzbget-git nzbget-git-debug)
-pkgver=24.6.r2544.3eb54ffa
+pkgver=24.6.r2545.9f755bf7
 pkgrel=1
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 
@@ -25,11 +25,25 @@ optdepends=('nzbget-git-debug: Debug symbols for nzbget'
 conflicts=('nzbget' 'nzbget-systemd')
 provides=('nzbget' 'nzbget-systemd')
 
+sha256sums=('SKIP'
+        'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
+
 source=("$pkgname::git+https://github.com/nzbgetcom/nzbget.git#branch=develop"
         "nzbget.service")
 
-sha256sums=('SKIP'
-            'e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99')
+pkgver() {
+  cd "${srcdir}/${pkgbase}"
+
+  # Extract version from CMakeLists.txt
+  local _pkgver=$(grep -oP 'set\(VERSION "\K[^"]+' CMakeLists.txt)
+
+  # Get commit count and short hash
+  local _rev=$(git rev-list --count HEAD)
+  local _hash=$(git rev-parse --short HEAD)
+
+  # Construct and print version string
+  printf "%s.r%s.%s" "${_pkgver}" "${_rev}" "${_hash}"
+}
 
 prepare() {
   cd "${srcdir}/${pkgbase}"
@@ -106,18 +120,4 @@ package_nzbget-git-debug() {
   if [[ -f "${srcdir}/${pkgbase}/build/nzbget" ]]; then
     objcopy --only-keep-debug "${srcdir}/${pkgbase}/build/nzbget" "${pkgdir}/usr/lib/debug/usr/bin/nzbget.debug"
   fi
-}
-
-pkgver() {
-  cd "${srcdir}/${pkgbase}"
-  
-  # Extract version from CMakeLists.txt
-  local _pkgver=$(grep -oP 'set\(VERSION "\K[^"]+' CMakeLists.txt)
-  
-  # Get commit count and short hash
-  local _rev=$(git rev-list --count HEAD)
-  local _hash=$(git rev-parse --short HEAD)
-  
-  # Construct and print version string
-  printf "%s.r%s.%s" "${_pkgver}" "${_rev}" "${_hash}"
 }
