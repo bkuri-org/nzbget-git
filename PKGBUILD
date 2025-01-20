@@ -6,7 +6,7 @@
 pkgbase=nzbget-git
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 pkgname=(nzbget-git nzbget-git-debug)
-pkgrel=1
+pkgrel=2
 pkgver=24.6.r2551.e1d6f69d
 
 arch=('x86_64')
@@ -52,7 +52,7 @@ pkgver() {
   
   local _pkgver=$(grep -oP 'set\(VERSION "\K[^"]+' CMakeLists.txt)
   local _rev=$(git rev-list --count HEAD)
-  local _hash=$(git rev-parse --short HEAD)
+  local _hash=$(git rev-parse --short=8 HEAD)
   
   printf "%s.r%s.%s" "${_pkgver}" "${_rev}" "${_hash}"
 }
