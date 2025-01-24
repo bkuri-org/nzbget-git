@@ -6,8 +6,8 @@
 pkgbase=nzbget-git
 pkgdesc="Download from Usenet using .nzb files (testing release)"
 pkgname=(nzbget-git nzbget-git-debug)
-pkgrel=2
-pkgver=24.6.r2551.e1d6f69d
+pkgrel=1
+pkgver=24.6.r2552.c7bd3172
 
 arch=('x86_64')
 install=nzbget.install
