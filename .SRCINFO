@@ -1,6 +1,6 @@
 pkgbase = nzbget-git
 	pkgdesc = Download from Usenet using .nzb files (testing release)
-	pkgver = 24.9.r2586.acec0f77
+	pkgver = 24.9.r2587.480d2b5b
 	pkgrel = 1
 	url = https://github.com/nzbgetcom/nzbget
 	install = nzbget.install
@@ -30,5 +30,5 @@ pkgname = nzbget-git
 
 pkgname = nzbget-git-debug
 	pkgdesc = Debug symbols for nzbget-git
-	depends = nzbget-git=24.9.r2586.acec0f77-1
+	depends = nzbget-git=24.9.r2587.480d2b5b-1
 	options = !strip
