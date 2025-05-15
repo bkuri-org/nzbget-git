@@ -2,3 +2,4 @@ nzbget-git/
 pkg/
 src/
 *.zst
+.last_testing_tag
