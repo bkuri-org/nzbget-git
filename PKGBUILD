@@ -5,7 +5,7 @@
 
 pkgbase=nzbget-git
 pkgdesc="Download from Usenet using .nzb files (testing release)"
-pkgname=(nzbget-git nzbget-git-debug)
+pkgname=nzbget-git
 pkgrel=1
 pkgver=26.2.r2723.227c7c42
 
@@ -30,7 +30,6 @@ makedepends=(
 )
 
 optdepends=(
-  'nzbget-git-debug: Debug symbols for nzbget'
   'p7zip: for unpacking archives'
   'python: for running scripts'
   'unrar: for unpacking archives'
@@ -112,26 +111,5 @@ package_nzbget-git() {
   rm -rf "${pkgdir}/usr/src"
   rm -rf "${pkgdir}/home"
   
-  # Strip binary while preserving debug symbols
-  if [[ -f "${pkgdir}/usr/bin/nzbget" ]]; then
-    strip --strip-all "${pkgdir}/usr/bin/nzbget"
-  fi
 }
 
-package_nzbget-git-debug() {
-  pkgdesc="Debug symbols for nzbget-git"
-  depends=("nzbget-git=${pkgver}-${pkgrel}")
-  options=('!strip')
-
-  install -dm755 "${pkgdir}/usr/lib/debug"
-
-  cd "${srcdir}/${pkgbase}/build"
-  
-  # Install debug symbols
-  find . -name "*.debug" -exec install -Dm644 {} "${pkgdir}/usr/lib/debug/{}" \;
-
-  # Install binary debug symbols
-  if [[ -f nzbget ]]; then
-    install -Dm644 nzbget "${pkgdir}/usr/lib/debug/usr/bin/nzbget.debug"
-  fi
-}

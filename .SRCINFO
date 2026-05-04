@@ -11,7 +11,6 @@ pkgbase = nzbget-git
 	makedepends = git
 	depends = libxml2
 	depends = openssl
-	optdepends = nzbget-git-debug: Debug symbols for nzbget
 	optdepends = p7zip: for unpacking archives
 	optdepends = python: for running scripts
 	optdepends = unrar: for unpacking archives
@@ -27,8 +26,3 @@ pkgbase = nzbget-git
 	sha256sums = e92d2d09e56930475c9f28641a3326a17aa187834e1bd6328a65b6ed7cc25e99
 
 pkgname = nzbget-git
-
-pkgname = nzbget-git-debug
-	pkgdesc = Debug symbols for nzbget-git
-	depends = nzbget-git=26.2.r2723.227c7c42-1
-	options = !strip
